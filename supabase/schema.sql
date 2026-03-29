@@ -26,14 +26,14 @@ CREATE TABLE IF NOT EXISTS tasks (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   expires_at TIMESTAMP WITH TIME ZONE DEFAULT (NOW() + INTERVAL '24 hours'),
-  completed_at TIMESTAMP WITH TIME ZONE,
-  
-  -- Indexes for performance
-  INDEX idx_tasks_user_id (user_id),
-  INDEX idx_tasks_status (status),
-  INDEX idx_tasks_expires_at (expires_at),
-  INDEX idx_tasks_created_at (created_at)
+  completed_at TIMESTAMP WITH TIME ZONE
 );
+
+-- Create indexes for tasks table
+CREATE INDEX IF NOT EXISTS idx_tasks_user_id ON tasks(user_id);
+CREATE INDEX IF NOT EXISTS idx_tasks_status ON tasks(status);
+CREATE INDEX IF NOT EXISTS idx_tasks_expires_at ON tasks(expires_at);
+CREATE INDEX IF NOT EXISTS idx_tasks_created_at ON tasks(created_at);
 
 -- Development logs table
 CREATE TABLE IF NOT EXISTS dev_logs (
@@ -43,13 +43,13 @@ CREATE TABLE IF NOT EXISTS dev_logs (
   tags TEXT[] DEFAULT '{}',
   completed BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  
-  -- Indexes
-  INDEX idx_dev_logs_user_id (user_id),
-  INDEX idx_dev_logs_created_at (created_at),
-  INDEX idx_dev_logs_completed (completed)
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Create indexes for dev_logs table
+CREATE INDEX IF NOT EXISTS idx_dev_logs_user_id ON dev_logs(user_id);
+CREATE INDEX IF NOT EXISTS idx_dev_logs_created_at ON dev_logs(created_at);
+CREATE INDEX IF NOT EXISTS idx_dev_logs_completed ON dev_logs(completed);
 
 -- Archived tasks (for completed tasks before deletion)
 CREATE TABLE IF NOT EXISTS archived_tasks (
@@ -63,12 +63,12 @@ CREATE TABLE IF NOT EXISTS archived_tasks (
   tags TEXT[] DEFAULT '{}',
   original_created_at TIMESTAMP WITH TIME ZONE,
   completed_at TIMESTAMP WITH TIME ZONE,
-  archived_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  
-  -- Indexes
-  INDEX idx_archived_tasks_user_id (user_id),
-  INDEX idx_archived_tasks_archived_at (archived_at)
+  archived_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Create indexes for archived_tasks table
+CREATE INDEX IF NOT EXISTS idx_archived_tasks_user_id ON archived_tasks(user_id);
+CREATE INDEX IF NOT EXISTS idx_archived_tasks_archived_at ON archived_tasks(archived_at);
 
 -- Events table
 CREATE TABLE IF NOT EXISTS events (
@@ -83,14 +83,14 @@ CREATE TABLE IF NOT EXISTS events (
   tags TEXT[] DEFAULT '{}',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  expires_at TIMESTAMP WITH TIME ZONE DEFAULT (NOW() + INTERVAL '24 hours'),
-  
-  -- Indexes
-  INDEX idx_events_user_id (user_id),
-  INDEX idx_events_event_date (event_date),
-  INDEX idx_events_status (status),
-  INDEX idx_events_expires_at (expires_at)
+  expires_at TIMESTAMP WITH TIME ZONE DEFAULT (NOW() + INTERVAL '24 hours')
 );
+
+-- Create indexes for events table
+CREATE INDEX IF NOT EXISTS idx_events_user_id ON events(user_id);
+CREATE INDEX IF NOT EXISTS idx_events_event_date ON events(event_date);
+CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
+CREATE INDEX IF NOT EXISTS idx_events_expires_at ON events(expires_at);
 
 -- Widget configurations
 CREATE TABLE IF NOT EXISTS widget_configs (
@@ -104,13 +104,13 @@ CREATE TABLE IF NOT EXISTS widget_configs (
   config JSONB DEFAULT '{}',
   is_active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  
-  -- Indexes
-  INDEX idx_widget_configs_user_id (user_id),
-  INDEX idx_widget_configs_type (widget_type),
-  INDEX idx_widget_configs_active (is_active)
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Create indexes for widget_configs table
+CREATE INDEX IF NOT EXISTS idx_widget_configs_user_id ON widget_configs(user_id);
+CREATE INDEX IF NOT EXISTS idx_widget_configs_type ON widget_configs(widget_type);
+CREATE INDEX IF NOT EXISTS idx_widget_configs_active ON widget_configs(is_active);
 
 -- Auto-purging function for expired tasks
 CREATE OR REPLACE FUNCTION purge_expired_tasks()

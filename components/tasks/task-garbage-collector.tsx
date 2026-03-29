@@ -17,6 +17,7 @@ interface Task {
 export function TaskGarbageCollector() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [isCleaning, setIsCleaning] = useState(false)
+  const [currentTime, setCurrentTime] = useState<string>('')
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
@@ -28,7 +29,16 @@ export function TaskGarbageCollector() {
   useEffect(() => {
     fetchTasks()
     const interval = setInterval(fetchTasks, 30000) // Update every 30 seconds
-    return () => clearInterval(interval)
+    
+    // Update time every second
+    const timeInterval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString())
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+      clearInterval(timeInterval)
+    }
   }, [])
 
   const fetchTasks = async () => {
@@ -215,7 +225,7 @@ export function TaskGarbageCollector() {
       <div className="mt-4 pt-4 border-t border-white/10">
         <div className="flex items-center justify-between text-xs text-gray-400">
           <span>Auto-cleanup runs every 24h</span>
-          <span>{new Date().toLocaleTimeString()}</span>
+          <span>{currentTime || '--:--:--'}</span>
         </div>
       </div>
     </motion.div>

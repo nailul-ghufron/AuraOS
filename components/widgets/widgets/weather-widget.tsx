@@ -24,6 +24,7 @@ export function WeatherWidget() {
   })
 
   const [loading, setLoading] = useState(true)
+  const [lastUpdated, setLastUpdated] = useState<string>('')
 
   useEffect(() => {
     // Simulate weather API call
@@ -39,6 +40,7 @@ export function WeatherWidget() {
           visibility: Math.floor(Math.random() * 10) + 5,
           location: 'San Francisco'
         })
+        setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
         setLoading(false)
       }, 1000)
     }
@@ -126,7 +128,7 @@ export function WeatherWidget() {
 
       <div className="mt-4 text-center">
         <div className="text-xs text-gray-500">
-          Last updated: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          Last updated: {lastUpdated || '--:--'}
         </div>
       </div>
     </motion.div>
