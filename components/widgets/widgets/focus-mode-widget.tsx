@@ -73,7 +73,7 @@ export function FocusModeWidget() {
             repeat: isRunning ? Infinity : 0,
             ease: "easeInOut"
           }}
-          className="text-6xl font-bold neon-text mb-8"
+          className="text-7xl lg:text-8xl font-extrabold tracking-tighter neon-text mb-8 drop-shadow-[0_0_20px_rgba(99,102,241,0.6)]"
         >
           {formatTime(time)}
         </motion.div>

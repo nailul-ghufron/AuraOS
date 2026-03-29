@@ -112,8 +112,8 @@ export function TaskGarbageCollector() {
       // Archive completed tasks (move to archived_tasks table)
       const { error: archiveError } = await supabase
         .from('tasks')
-        .in('status', ['completed'])
         .select()
+        .in('status', ['completed'])
 
       if (archiveError) throw archiveError
 
@@ -208,11 +208,11 @@ export function TaskGarbageCollector() {
               className={`p-2 rounded-lg border ${getStatusColor(task.status)} transition-all`}
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2 flex-1 min-w-0">
+                <div className="flex items-center space-x-3 flex-1 min-w-0">
                   {getStatusIcon(task.status)}
-                  <p className="text-sm text-white truncate">{task.title}</p>
+                  <p className="text-sm font-medium text-white truncate lowercase tracking-wide">{task.title}</p>
                 </div>
-                <div className="text-xs text-gray-400 ml-2">
+                <div className="text-xs font-semibold tracking-wider text-gray-400 ml-3">
                   {task.time_until_expiry}
                 </div>
               </div>

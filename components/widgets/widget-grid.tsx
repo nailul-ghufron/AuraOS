@@ -46,7 +46,7 @@ export function WidgetGrid() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="grid grid-cols-2 gap-6 h-full">
+      <div className="grid grid-cols-2 gap-10 h-full max-w-full">
         {widgets.map((widget, index) => (
           <motion.div
             key={widget.id}
